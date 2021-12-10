@@ -1,24 +1,26 @@
-const usersCollections = [];
-const User = require('./user.model');
+import { User, UserProperties } from './user.model';
 
-const getAll = async () =>
-  usersCollections.map((user) => User.toResponse(user));
+const usersCollections: Array<User> = [];
 
-const create = async ({ name, login, password }) => {
+async function getAll() {
+  return usersCollections.map((user: User) => User.toResponse(user));
+}
+
+async function create({ name, login, password }: UserProperties) {
   const user = new User({ name, login, password });
 
   usersCollections.push(user);
 
   return User.toResponse(user);
-};
+}
 
-const getById = async ({ id }) => {
+async function getById({ id }: { id: string }) {
   const foundedUser = usersCollections.find((user) => user.id === id);
 
   return foundedUser === undefined ? foundedUser : User.toResponse(foundedUser);
-};
+}
 
-const update = async ({ id, ...props }) => {
+async function update({ id, props }: { id: string; props: UserProperties }) {
   const foundedUser = usersCollections.find((user) => user.id === id);
   if (foundedUser !== undefined) {
     foundedUser.update(props);
@@ -27,15 +29,22 @@ const update = async ({ id, ...props }) => {
   }
 
   return User.toResponse(foundedUser);
-};
+}
 
-const deleteUser = async ({ id }) => {
+async function deleteUser({ id }: { id: string }) {
   const userIndex = usersCollections.findIndex((user) => user.id === id);
   if (userIndex === -1) {
     return false;
   }
 
   return Boolean(usersCollections.splice(userIndex, 1));
-};
+}
 
-module.exports = { getAll, getById, create, update, deleteUser };
+export { getAll, create, getById, update, deleteUser };
+export default {
+  getAll,
+  create,
+  getById,
+  update,
+  deleteUser,
+};
