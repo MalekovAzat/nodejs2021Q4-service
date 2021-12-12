@@ -19,6 +19,14 @@ class User implements UserInterface {
 
   password: string;
 
+  /**
+   * Constructor for class User
+   * @param param0 The user data
+   * @param param0.id The id of a user
+   * @param param0.name The name of a user
+   * @param param0.login The login of a user
+   * @param param0.password The passoword of a user
+   */
   constructor({
     id = uuidv4(),
     name = 'USER',
@@ -31,11 +39,20 @@ class User implements UserInterface {
     this.password = password;
   }
 
+  /**
+   * The function transforms user to response format
+   * @param user The user which should be translated
+   * @returns The transformed used data
+   */
   static toResponse(user: User) {
     const { id, name, login } = user;
     return { id, name, login };
   }
 
+  /**
+   * The function update User properties like name, login, password
+   * @param properties Theobject with user properties
+   */
   update(properties: UserProperties): void {
     Object.entries(properties).forEach(([name, value]: [string, string]) => {
       if (
