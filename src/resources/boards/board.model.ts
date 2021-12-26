@@ -23,12 +23,10 @@ class Board implements BoardInterface {
   title: string;
 
   columns: Array<Column>;
+
   /**
    * Constructor for class Board
-   * @param param0 The board data
-   * @param param0.id The id of a board
-   * @param param0.title The title of a board
-   * @param param0.columns The list of the columns of a board
+   * @param param0 - The board data
    */
   constructor({
     id = uuidv4(),
@@ -43,9 +41,10 @@ class Board implements BoardInterface {
     this.title = title;
     this.columns = columns;
   }
+
   /**
    * The function update Board properties like name, login, password
-   * @param properties Theobject with board properties
+   * @param properties - Theobject with board properties
    */
   update(properties: BoardProperties) {
     Object.entries(properties).forEach(([name, value]) => {

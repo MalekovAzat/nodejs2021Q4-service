@@ -12,8 +12,7 @@ async function getAll() {
 
 /**
  * The function returns founded by id task if exist othervice returns empty object
- * @param param0 The object which contain task id
- * @param param0.id The id of the task
+ * @param param0 - The object which contain task id
  * @returns The promise with founded task or empty object
  */
 async function getById({ id }: TaskId) {
@@ -22,13 +21,7 @@ async function getById({ id }: TaskId) {
 
 /**
  * The function creates task and returns created task
- * @param param0 The task data
- * @param param0.id The id of a task
- * @param param0.order The order of a task
- * @param param0.description The description of a task
- * @param param0.userId The userId of a task
- * @param param0.boardId The boardId of a task
- * @param param0.columnId The columnId of a task
+ * @param param0 - The task data
  * @returns The promise with created task data in the response format
  */
 async function create({
@@ -55,9 +48,7 @@ async function create({
 
 /**
  * The function updates task data by task id
- * @param param0 The object which contains task id and properties
- * @param param0.id The id of the task to update
- * @param param0.props The task properties object
+ * @param param0 - The object which contains task id and properties
  * @returns The promise with updated task in the respose format
  */
 async function update({
@@ -79,8 +70,7 @@ async function update({
 
 /**
  * The function delete task by id
- * @param param0 The object which contains task id
- * @param param0.id The if of the task to be deleted
+ * @param param0 - The object which contains task id
  * @returns The promise with true if the task deleted false otherwise
  */
 async function deleteTask({ id }: TaskId) {
@@ -93,8 +83,7 @@ async function deleteTask({ id }: TaskId) {
 }
 /**
  * The function delete task by provided boardId
- * @param param0 The object which contain boardId
- * @param param0.boardId The board id
+ * @param param0 - The object which contain boardId
  */
 async function deleteByBoardId({ boardId }: { boardId: string }) {
   tasksCollection = tasksCollection.filter((task) => task.boardId !== boardId);
@@ -102,8 +91,7 @@ async function deleteByBoardId({ boardId }: { boardId: string }) {
 
 /**
  * The function resets usersId for the task where userId is equal to providede userId
- * @param param0 Object which contain userId
- * @param param.userId The user id
+ * @param param0 - Object which contain userId
  */
 async function resetUserId({ userId }: { userId: string }) {
   const tasksToResetUser = tasksCollection

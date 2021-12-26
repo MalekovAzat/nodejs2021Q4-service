@@ -11,8 +11,7 @@ function getAll() {
 
 /**
  * The function to request to db to find task by id
- * @param param0 The object which contain task id
- * @param param0.id The id of the task
+ * @param param0 - The object which contain task id
  * @returns The promise with founded task or empty object
  */
 function getById({ id }: TaskId) {
@@ -21,13 +20,7 @@ function getById({ id }: TaskId) {
 
 /**
  * The function to request to db to create task
- * @param param0 The task data
- * @param param0.id The id of a task
- * @param param0.order The order of a task
- * @param param0.description The description of a task
- * @param param0.userId The userId of a task
- * @param param0.boardId The boardId of a task
- * @param param0.columnId The columnId of a task
+ * @param param0 - The task data
  * @returns The promise with created task data in the response format
  */
 function create({
@@ -50,13 +43,7 @@ function create({
 
 /**
  * The function to request to db to update the task
- * @param param0 The task data
- * @param param0.id The id of a task
- * @param param0.order The order of a task
- * @param param0.description The description of a task
- * @param param0.userId The userId of a task
- * @param param0.boardId The boardId of a task
- * @param param0.columnId The columnId of a task
+ * @param param0 - The task data
  * @returns The promise with updated task in the respose format
  */
 function update({
@@ -83,15 +70,16 @@ function update({
 
 /**
  * The function to request to db to delete task
- * @param param0 The object which contains task id
- * @param param0.id The if of the task to be deleted
+ * @param param0 - The object which contains task id
  * @returns The promise with true if the task deleted false otherwise
  */
 function deleteTask({ id }: TaskId) {
   return tasksRepo.deleteTask({ id });
 }
 
-export { getAll, getById, create, update, deleteTask };
+export {
+  getAll, getById, create, update, deleteTask,
+};
 export default {
   getAll,
   getById,

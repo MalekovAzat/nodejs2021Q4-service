@@ -10,34 +10,34 @@ const router = new Router({
 router.use(
   /**
    * The function sets respose type to application/json
-   * @param ctx Koa context
-   * @param next Callbach which should be called at the end of mw function
+   * @param ctx - Koa context
+   * @param next - Callbach which should be called at the end of mw function
    */
   async (ctx, next) => {
     ctx.type = 'application/json';
-    next();
-  }
+    await next();
+  },
 );
 
 router.get(
   '/',
   /**
    * The function which handles get request and returns all tasks
-   * @param ctx Koa context
+   * @param ctx - Koa context
    */
   async (ctx) => {
     const tasks = await taskService.getAll();
 
     ctx.body = tasks;
     ctx.status = 200;
-  }
+  },
 );
 
 router.get(
   '/:taskId([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})',
   /**
    * The function which handles get request and returns tasks by provided id
-   * @param ctx Koa context
+   * @param ctx - Koa context
    */
   async (ctx) => {
     const id = ctx.params.taskId;
@@ -51,14 +51,14 @@ router.get(
       ctx.body = { message: `Task wiht id ${id} is not found` };
       ctx.status = 404;
     }
-  }
+  },
 );
 
 router.post(
   '/',
   /**
    * The function which handles post request and returns created task
-   * @param ctx
+   * @param ctx-
    */
   async (ctx) => {
     const {
@@ -82,19 +82,21 @@ router.post(
 
     ctx.body = task;
     ctx.status = 201;
-  }
+  },
 );
 
 router.put(
   '/:taskId([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})',
   /**
    * The function which handles put request and returns updated task
-   * @param ctx Koa context
+   * @param ctx - Koa context
    */
   async (ctx) => {
     const id = ctx.params.taskId;
     const { boardId } = ctx.params;
-    const { title, order, description, userId, columnId } = ctx.request
+    const {
+      title, order, description, userId, columnId,
+    } = ctx.request
       .body as TaskProperties;
 
     const user = await taskService.update({
@@ -114,14 +116,14 @@ router.put(
       ctx.body = { message: `Task with id ${id} not found` };
       ctx.status = 404;
     }
-  }
+  },
 );
 
 router.delete(
   '/:id([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})',
   /**
    * The functions which handles delete request and delete task by id
-   * @param ctx Koa context
+   * @param ctx - Koa context
    */
   async (ctx) => {
     const { id } = ctx.params;
@@ -135,7 +137,7 @@ router.delete(
       ctx.body = { message: `Task with id ${id} not found` };
       ctx.status = 404;
     }
-  }
+  },
 );
 
 export { router };
