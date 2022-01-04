@@ -9,10 +9,11 @@
   "description": "REST service starter for RS School",
   "main": "src/server.js",
   "scripts": {
-    "start": "nodemon src/server.js",
+    "start": "nodemon dist/src/server.js",
     "lint": "eslint --ext .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
-    "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
+    "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace",
+    "build": "tsc"
   },
   "keywords": [
     "rs",
@@ -52,10 +53,15 @@
     "koa-router": "^10.1.1",
     "swagger2": "^3.0.0",
     "swagger2-koa": "^3.0.0",
-    "uuid": "8.3.2",
+    "uuid": "^8.3.2",
     "yamljs": "0.3.0"
   },
   "devDependencies": {
+    "@types/koa-router": "^7.4.4",
+    "@types/node": "^16.11.12",
+    "@types/uuid": "^8.3.3",
+    "@typescript-eslint/eslint-plugin": "5.5.0",
+    "@typescript-eslint/parser": "5.5.0",
     "chai": "4.3.4",
     "debug": "4.3.2",
     "dirty-chai": "2.0.1",
@@ -65,6 +71,7 @@
     "eslint-plugin-import": "2.25.3",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-tsdoc": "0.2.14",
     "husky": "^4.3.8",
     "jest": "27.3.1",
     "lint-staged": "12.0.3",
