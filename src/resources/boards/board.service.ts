@@ -14,8 +14,7 @@ function getAll() {
 
 /**
  * The function to request to db to find board by id
- * @param param0 The object which contain board id
- * @param param0.id The id of the board
+ * @param param0 - The object which contain board id
  * @returns The promise with founded board or empty object
  */
 function getById({ id }: BoardId) {
@@ -24,9 +23,7 @@ function getById({ id }: BoardId) {
 
 /**
  * The function to request to db to create board
- * @param param0 The board data
- * @param param0.title The title of the board
- * @param param0.columns The columns of the board
+ * @param param0 - The board data
  * @returns The promise with created board data in the response format
  */
 function create({ title, columns }: BoardProperties) {
@@ -35,10 +32,7 @@ function create({ title, columns }: BoardProperties) {
 
 /**
  * The function to request to db to update the board
- * @param param0 The object which contains board id and properties
- * @param param0.id The id of the board to update
- * @param param0.title The title of the board
- * @param param0.columns The columns of the board
+ * @param param0 - The object which contains board id and properties
  * @returns The promise with updated board in the respose format
  */
 function update({ id, title, columns }: BoardProperties & BoardId) {
@@ -53,8 +47,7 @@ function update({ id, title, columns }: BoardProperties & BoardId) {
 
 /**
  * The function to request to db to delete board
- * @param param0 The object which contains board id
- * @param param0.id The if of the board to be deleted
+ * @param param0 - The object which contains board id
  * @returns The promise with true if the board deleted false otherwise
  */
 function deleteBoard({ id }: BoardId) {
@@ -62,7 +55,9 @@ function deleteBoard({ id }: BoardId) {
   return boardsRepo.deleteBoard({ id });
 }
 
-export { getAll, getById, create, update, deleteBoard };
+export {
+  getAll, getById, create, update, deleteBoard,
+};
 export default {
   getAll,
   getById,

@@ -12,10 +12,7 @@ async function getAll() {
 
 /**
  * The function creates user and returns user response data
- * @param param0 The user data
- * @param param0.name The name of the user
- * @param param0.login The login of the user
- * @param param0.password The password of the user
+ * @param param0 - The user data
  * @returns The promise with created user data in the response format
  */
 async function create({ name, login, password }: UserProperties) {
@@ -28,8 +25,7 @@ async function create({ name, login, password }: UserProperties) {
 
 /**
  * The function returns founded by id user if exist othervice returns empty object
- * @param param0 The object which contain user id
- * @param param0.id The id of the user
+ * @param param0 - The object which contain user id
  * @returns The promise with founded User or empty object
  */
 async function getById({ id }: { id: string }) {
@@ -40,9 +36,7 @@ async function getById({ id }: { id: string }) {
 
 /**
  * The function updates user data by user id
- * @param param0 The object which contains user id and properties
- * @param param0.id The id of the user to update
- * @param param0.props The user properties object
+ * @param param0 - The object which contains user id and properties
  * @returns The promise with updated User in the respose format
  */
 async function update({ id, props }: { id: string; props: UserProperties }) {
@@ -58,8 +52,7 @@ async function update({ id, props }: { id: string; props: UserProperties }) {
 
 /**
  * The function delete user by id
- * @param param0 The object which contains user id
- * @param param0.id The if of the user to be deleted
+ * @param param0 - The object which contains user id
  * @returns The promise with true if the user deleted false otherwise
  */
 async function deleteUser({ id }: { id: string }) {
@@ -71,7 +64,9 @@ async function deleteUser({ id }: { id: string }) {
   return Boolean(usersCollections.splice(userIndex, 1));
 }
 
-export { getAll, create, getById, update, deleteUser };
+export {
+  getAll, create, getById, update, deleteUser,
+};
 export default {
   getAll,
   create,

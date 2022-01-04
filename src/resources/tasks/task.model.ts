@@ -29,15 +29,10 @@ class Task implements TaskInterface {
   boardId: string;
 
   columnId: string;
+
   /**
    * Constructor for class Task
-   * @param param0 The task data
-   * @param param0.id The id of a task
-   * @param param0.order The order of a task
-   * @param param0.description The description of a task
-   * @param param0.userId The userId of a task
-   * @param param0.boardId The boardId of a task
-   * @param param0.columnId The columnId of a task
+   * @param param0 - The task data
    */
   constructor({
     id = uuidv4(),
@@ -67,7 +62,7 @@ class Task implements TaskInterface {
 
   /**
    * The function updates properties for task
-   * @param properties the properties to update
+   * @param properties - the properties to update
    */
   update(properties: TaskProperties) {
     Object.entries(properties).forEach(([name, value]) => {
@@ -79,8 +74,8 @@ class Task implements TaskInterface {
           'userId',
           'boardId',
           'columnId',
-        ].indexOf(name) >= 0 &&
-        value !== undefined
+        ].indexOf(name) >= 0
+        && value !== undefined
       ) {
         Object.assign(this, { [name]: value });
       }

@@ -21,11 +21,7 @@ class User implements UserInterface {
 
   /**
    * Constructor for class User
-   * @param param0 The user data
-   * @param param0.id The id of a user
-   * @param param0.name The name of a user
-   * @param param0.login The login of a user
-   * @param param0.password The passoword of a user
+   * @param param0 -The user data
    */
   constructor({
     id = uuidv4(),
@@ -41,7 +37,7 @@ class User implements UserInterface {
 
   /**
    * The function transforms user to response format
-   * @param user The user which should be translated
+   * @param user - The user which should be translated
    * @returns The transformed used data
    */
   static toResponse(user: User) {
@@ -51,13 +47,13 @@ class User implements UserInterface {
 
   /**
    * The function update User properties like name, login, password
-   * @param properties Theobject with user properties
+   * @param properties - Theobject with user properties
    */
   update(properties: UserProperties): void {
     Object.entries(properties).forEach(([name, value]: [string, string]) => {
       if (
-        ['name', 'login', 'password'].indexOf(name) >= 0 &&
-        value !== undefined
+        ['name', 'login', 'password'].indexOf(name) >= 0
+        && value !== undefined
       ) {
         Object.assign(this, { [name]: value });
       }

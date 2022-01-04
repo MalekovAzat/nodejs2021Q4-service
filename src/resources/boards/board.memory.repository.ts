@@ -12,8 +12,7 @@ async function getAll() {
 
 /**
  * The function returns founded by id board if exist othervice returns empty object
- * @param param0 The object which contain board id
- * @param param0.id The id of the board
+ * @param param0 - The object which contain board id
  * @returns The promise with founded board or empty object
  */
 async function getById({ id }: BoardId) {
@@ -22,10 +21,7 @@ async function getById({ id }: BoardId) {
 
 /**
  * The function creates board and returns board response data
- * @param param0 The board data
- * @param param0.id The id of a board
- * @param param0.title The title of a board
- * @param param0.columns The list of the columns of a board
+ * @param param0 - The board data
  * @returns The promise with created board data in the response format
  */
 async function create({ title, columns }: BoardProperties) {
@@ -38,9 +34,7 @@ async function create({ title, columns }: BoardProperties) {
 
 /**
  * The function updates board data by board id
- * @param param0 The object which contains board id and properties
- * @param param0.id The id of the board to update
- * @param param0.props The board properties object
+ * @param param0 - The object which contains board id and properties
  * @returns The promise with updated board in the respose format
  */
 async function update({ id, props }: { id: string; props: BoardProperties }) {
@@ -55,8 +49,7 @@ async function update({ id, props }: { id: string; props: BoardProperties }) {
 
 /**
  * The function delete board by id
- * @param param0 The object which contains board id
- * @param param0.id The if of the board to be deleted
+ * @param param0 - The object which contains board id
  * @returns The promise with true if the board deleted false otherwise
  */
 async function deleteBoard({ id }: BoardId) {
@@ -68,7 +61,9 @@ async function deleteBoard({ id }: BoardId) {
   return Boolean(boardsCollection.splice(boardIndex, 1));
 }
 
-export { getAll, getById, create, update, deleteBoard };
+export {
+  getAll, getById, create, update, deleteBoard,
+};
 
 export default {
   getAll,
