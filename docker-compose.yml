@@ -1,0 +1,32 @@
+version: "3.1"
+services:
+
+  backend-server:
+    build: .
+    restart: always
+    ports: 
+      - "${PORT}:${PORT}"
+    volumes:
+      - ./logs:/app/logs
+      - ./src:/app/src
+    networks:
+      - backend
+    depends_on:
+      - postgres
+    environment:
+      - PORT
+
+  postgres:
+    build: ./postgres 
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./postgres/postgres-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+networks:
+  backend:
+    name: backend-network
+ 

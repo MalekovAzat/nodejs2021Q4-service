@@ -112,7 +112,7 @@ export default class Logger implements ILogger {
     const logLine = createLogLine(logInfo, 'error');
 
     this.transmitLine(logLine);
-    // bad solution but no time
+
     this.transmitterErrorStream.write(logLine);
   }
 
@@ -154,5 +154,17 @@ export default class Logger implements ILogger {
     const logLine = createLogLine(logInfo, 'debug');
 
     this.transmitLine(logLine);
+  }
+
+  /**
+   * The function flush internal logger buffers
+   */
+  flushBuffers() {
+    if (this.transmitterStream) {
+      this.transmitterStream.end();
+    }
+    if (this.transmitterErrorStream) {
+      this.transmitterErrorStream.end();
+    }
   }
 }

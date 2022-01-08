@@ -26,6 +26,7 @@ router.get(
    */
   async (ctx) => {
     const users = await usersService.getAll();
+
     ctx.body = users;
     ctx.status = 200;
   },

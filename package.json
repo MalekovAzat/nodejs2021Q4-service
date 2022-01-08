@@ -9,11 +9,13 @@
   "description": "REST service starter for RS School",
   "main": "src/server.js",
   "scripts": {
-    "start": "node dist/src/server.js",
+    "start:dev": "nodemon --exitcrash dist/src/server.js",
+    "start:prod": "node dist/bundle/main.js",
+    "build:dev": "tsc",
+    "build:prod": "tsc && webpack",
     "lint": "eslint --ext .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
-    "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace",
-    "build": "tsc"
+    "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
   },
   "keywords": [
     "rs",
@@ -46,9 +48,8 @@
   },
   "dependencies": {
     "cross-env": "7.0.3",
-    "dotenv": "10.0.0",
+    "dotenv": "^10.0.0",
     "koa": "^2.13.4",
-    "koa-better-body": "^3.3.9",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^10.1.1",
     "swagger2": "^3.0.0",
@@ -63,7 +64,6 @@
     "@typescript-eslint/eslint-plugin": "5.5.0",
     "@typescript-eslint/parser": "5.5.0",
     "chai": "4.3.4",
-    "debug": "4.3.2",
     "dirty-chai": "2.0.1",
     "eslint": "8.2.0",
     "eslint-config-airbnb-base": "15.0.0",
@@ -74,8 +74,8 @@
     "eslint-plugin-tsdoc": "0.2.14",
     "husky": "^4.3.8",
     "jest": "27.3.1",
-    "lint-staged": "12.0.3",
-    "nodemon": "2.0.15",
+    "lint-staged": "^12.1.7",
+    "nodemon": "^2.0.15",
     "prettier": "2.4.1",
     "supertest": "6.1.6"
   }
