@@ -52,8 +52,11 @@
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^10.1.1",
+    "pg": "^8.7.1",
+    "reflect-metadata": "^0.1.13",
     "swagger2": "^3.0.0",
     "swagger2-koa": "^3.0.0",
+    "typeorm": "^0.2.41",
     "uuid": "^8.3.2",
     "yamljs": "0.3.0"
   },

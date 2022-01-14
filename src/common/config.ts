@@ -18,10 +18,12 @@ if (!fs.existsSync(logsPath)) {
   fs.mkdirSync(logsPath);
 }
 
-const ERROR_LOG_FILE = path.join(logsPath, process.env.ERROR_LOG_FILE as string)
-  || path.join(logsPath, 'error-logs.txt');
-const COMMON_LOG_FILE = path.join(logsPath, process.env.COMMON_LOG_FILE as string)
-  || path.join(logsPath, 'logs.txt');
+const ERROR_LOG_FILE =
+  path.join(logsPath, process.env.ERROR_LOG_FILE as string) ||
+  path.join(logsPath, 'error-logs.txt');
+const COMMON_LOG_FILE =
+  path.join(logsPath, process.env.COMMON_LOG_FILE as string) ||
+  path.join(logsPath, 'logs.txt');
 const CONSOLE_LOG = process.env.CONSOLE_LOG === 'true';
 export {
   PORT,
