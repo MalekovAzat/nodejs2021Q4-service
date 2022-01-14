@@ -15,7 +15,11 @@
     "build:prod": "tsc && webpack",
     "lint": "eslint --ext .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
-    "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
+    "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace",
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
+    "typeorm:migration:run": "ts-node --transpile-only ./node_modules/typeorm/cli.js migration:run",
+    "typeorm:migration:revert": "ts-node --transpile-only ./node_modules/typeorm/cli.js migration:revert",
+    "typeorm:schema:drop": "ts-node --transpile-only ./node_modules/typeorm/cli.js schema:drop"
   },
   "keywords": [
     "rs",
@@ -54,8 +58,10 @@
     "koa-router": "^10.1.1",
     "pg": "^8.7.1",
     "reflect-metadata": "^0.1.13",
+    "shortid": "^2.2.16",
     "swagger2": "^3.0.0",
     "swagger2-koa": "^3.0.0",
+    "ts-node": "^10.4.0",
     "typeorm": "^0.2.41",
     "uuid": "^8.3.2",
     "yamljs": "0.3.0"
@@ -63,6 +69,7 @@
   "devDependencies": {
     "@types/koa-router": "^7.4.4",
     "@types/node": "^16.11.12",
+    "@types/shortid": "^0.0.29",
     "@types/uuid": "^8.3.3",
     "@typescript-eslint/eslint-plugin": "5.5.0",
     "@typescript-eslint/parser": "5.5.0",

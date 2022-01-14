@@ -10,8 +10,11 @@ interface ILogger {
   errorLoggerStream: WritableStream | undefined;
   commonLoggerStream: WritableStream | undefined;
   consoleLoggerStream: WritableStream | undefined;
-  transmitterStream: PassThrough;
-  transmitterErrorStream: PassThrough;
+
+  errorTransmitterStream: PassThrough | undefined;
+  commonTransmitterStream: PassThrough | undefined;
+  consoleTransmitterStream: PassThrough | undefined;
+
   error(logInfo: DynamicAccessProperty): void;
 
   warning(logInfo: DynamicAccessProperty): void;
@@ -39,18 +42,31 @@ function createLogLine(
     .join(' ')}\n`;
 }
 
+function addColor(line: string, color: 'red' | 'yellow' | 'green' | 'cyan') {
+  let prefix = '';
+
+  if (color === 'red') {
+    prefix = '\x1b[31m';
+  } else if (color === 'yellow') {
+    prefix = '\x1b[33m';
+  } else if (color === 'green') {
+    prefix = '\x1b[32m';
+  } else if (color === 'cyan') {
+    prefix = '\x1b[36m';
+  }
+  return prefix + line;
+}
+
 export default class Logger implements ILogger {
   logLevel: number;
 
   errorLoggerStream: WritableStream | undefined;
-
   commonLoggerStream: WritableStream | undefined;
-
   consoleLoggerStream: WritableStream | undefined;
 
-  transmitterErrorStream: PassThrough;
-
-  transmitterStream: PassThrough;
+  errorTransmitterStream: PassThrough | undefined;
+  commonTransmitterStream: PassThrough | undefined;
+  consoleTransmitterStream: PassThrough | undefined;
 
   /**
    * The constructor
@@ -67,26 +83,26 @@ export default class Logger implements ILogger {
   ) {
     this.logLevel = logLevel;
 
-    this.transmitterStream = new PassThrough();
-    this.transmitterErrorStream = new PassThrough();
-
     if (errorLogFile !== undefined && errorLogFile !== '') {
+      this.errorTransmitterStream = new PassThrough();
       const errorLoggerStream = new WritableStream(errorLogFile);
-      this.transmitterErrorStream.pipe(
+      this.errorTransmitterStream.pipe(
         errorLoggerStream as unknown as NodeJS.WritableStream
       );
     }
 
     if (commonLogFile !== undefined && commonLogFile !== '') {
+      this.commonTransmitterStream = new PassThrough();
       const commonLoggerStream = new WritableStream(commonLogFile);
-      this.transmitterStream.pipe(
+      this.commonTransmitterStream.pipe(
         commonLoggerStream as unknown as NodeJS.WritableStream
       );
     }
 
     if (includeConsoleOutput) {
+      this.consoleTransmitterStream = new PassThrough();
       const consoleLoggerStream = new WritableStream('');
-      this.transmitterStream.pipe(
+      this.consoleTransmitterStream.pipe(
         consoleLoggerStream as unknown as NodeJS.WritableStream
       );
     }
@@ -96,8 +112,12 @@ export default class Logger implements ILogger {
    * The function write line to stream
    * @param line -  Line to write to stream
    */
-  private transmitLine(line: string): void {
-    this.transmitterStream.write(line);
+  private transmitLine(stream: PassThrough | undefined, line: string): void {
+    if (!stream) {
+      return;
+    }
+
+    stream.write(line);
   }
 
   /**
@@ -110,10 +130,11 @@ export default class Logger implements ILogger {
     }
 
     const logLine = createLogLine(logInfo, 'error');
+    this.transmitLine(this.commonTransmitterStream, logLine);
+    this.transmitLine(this.errorTransmitterStream, logLine);
 
-    this.transmitLine(logLine);
-
-    this.transmitterErrorStream.write(logLine);
+    const redColoredLine = addColor(logLine, 'red');
+    this.transmitLine(this.consoleTransmitterStream, redColoredLine);
   }
 
   /**
@@ -127,7 +148,11 @@ export default class Logger implements ILogger {
 
     const logLine = createLogLine(logInfo, 'warning');
 
-    this.transmitLine(logLine);
+    this.transmitLine(this.commonTransmitterStream, logLine);
+    this.transmitLine(this.errorTransmitterStream, logLine);
+
+    const redColoredLine = addColor(logLine, 'yellow');
+    this.transmitLine(this.consoleTransmitterStream, redColoredLine);
   }
 
   /**
@@ -140,7 +165,11 @@ export default class Logger implements ILogger {
     }
     const logLine = createLogLine(logInfo, 'info');
 
-    this.transmitLine(logLine);
+    this.transmitLine(this.commonTransmitterStream, logLine);
+    this.transmitLine(this.errorTransmitterStream, logLine);
+
+    const redColoredLine = addColor(logLine, 'cyan');
+    this.transmitLine(this.consoleTransmitterStream, redColoredLine);
   }
 
   /**
@@ -153,18 +182,25 @@ export default class Logger implements ILogger {
     }
     const logLine = createLogLine(logInfo, 'debug');
 
-    this.transmitLine(logLine);
+    this.transmitLine(this.commonTransmitterStream, logLine);
+    this.transmitLine(this.errorTransmitterStream, logLine);
+
+    const redColoredLine = addColor(logLine, 'green');
+    this.transmitLine(this.consoleTransmitterStream, redColoredLine);
   }
 
   /**
    * The function flush internal logger buffers
    */
   flushBuffers() {
-    if (this.transmitterStream) {
-      this.transmitterStream.end();
+    if (this.commonTransmitterStream) {
+      this.commonTransmitterStream.end();
     }
-    if (this.transmitterErrorStream) {
-      this.transmitterErrorStream.end();
+    if (this.errorTransmitterStream) {
+      this.errorTransmitterStream.end();
+    }
+    if (this.consoleTransmitterStream) {
+      this.consoleTransmitterStream.end();
     }
   }
 }

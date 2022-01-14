@@ -6,4 +6,4 @@ COPY . .
 RUN npm install \
     && npm run build:dev && npm cache clean --force
 
-CMD PORT=${PORT} npm run start:dev
+CMD npm run start:dev

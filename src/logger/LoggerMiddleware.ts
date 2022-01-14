@@ -1,5 +1,5 @@
 import { Context, Next } from 'koa';
-import { v4 as uuidv4 } from 'uuid';
+import { generate as generateId } from 'shortid';
 import Logger from './Logger';
 
 import {
@@ -13,7 +13,7 @@ export const logger = new Logger(
   ERROR_LOG_FILE,
   COMMON_LOG_FILE,
   CONSOLE_LOG,
-  LOG_LEVEL,
+  LOG_LEVEL
 );
 
 /**
@@ -31,40 +31,24 @@ export default function loggerMiddlware(): (
    * @param next - The callback to call to go to next mw
    */
   return async function (ctx: Context, next: Next) {
-    const reqId = uuidv4();
-
-    loggerInteral.error({
-      id: reqId,
-      url: ctx.request.url,
-      reqBody: ctx.request.body,
-      reqQueryParam: ctx.request.query,
-    });
-
-    loggerInteral.warning({
-      id: reqId,
-      url: ctx.request.url,
-      reqBody: ctx.request.body,
-      reqQueryParam: ctx.request.query,
-    });
+    const reqId = generateId();
 
     loggerInteral.info({
       id: reqId,
+      method: ctx.method,
       url: ctx.request.url,
       reqBody: ctx.request.body,
       reqQueryParam: ctx.request.query,
     });
 
-    loggerInteral.debug({
-      id: reqId,
-      url: ctx.request.url,
-      reqBody: ctx.request.body,
-      reqQueryParam: ctx.request.query,
-    });
     try {
       await next();
     } catch (e) {
       ctx.body = `Unexpected error: ${(e as Error).message}`;
       ctx.status = 500;
+      loggerInteral.error({
+        errorMessage: (e as Error).message,
+      });
     }
     loggerInteral.info({
       id: reqId,

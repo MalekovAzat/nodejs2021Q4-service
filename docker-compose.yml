@@ -14,15 +14,17 @@ services:
     depends_on:
       - postgres
     environment:
-      - PORT
+      CONSOLE_LOG: "true"
+      PORT: ${PORT}
+      LOG_LEVEL: 3
 
   postgres:
     build: ./postgres
     restart: always
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: test
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_BASE}
     ports:
       - 5432:5432
     volumes:
@@ -33,4 +35,3 @@ services:
 networks:
   backend:
     name: backend-network
- 
