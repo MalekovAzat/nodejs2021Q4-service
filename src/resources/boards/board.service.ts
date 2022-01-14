@@ -1,15 +1,37 @@
-import { BoardId, BoardProperties } from './board.model';
+import { BoardInterface } from './board.interfaces';
 
-import boardsRepo from './board.memory.repository';
+import { Board } from '../../entity/Board';
+import { getRepository } from '../../common/postgresProvider';
 
-import taskRepo from '../tasks/task.memory.repository';
+import {
+  createEntities as createColumnEntities,
+  updateEntities as updateColumnEntities,
+} from '../columns/column.service';
+import { Task } from '../../entity/Task';
+import { logger } from '../../logger/LoggerMiddleware';
 
 /**
  * The function to request to db to get all boards
  * @returns The promise with array of the boards
  */
-function getAll() {
-  return boardsRepo.getAll();
+async function getAll() {
+  const boardRepo = getRepository(Board);
+
+  const allBoards = await boardRepo.find({ relations: ['columns'] });
+
+  // sort columns by order for each boards
+  for (const board of allBoards) {
+    (board as Board).columns.sort(({ order: order1 }, { order: order2 }) => {
+      if (order1 > order2) {
+        return 1;
+      } else if (order1 < order2) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+
+  return allBoards;
 }
 
 /**
@@ -17,8 +39,35 @@ function getAll() {
  * @param param0 - The object which contain board id
  * @returns The promise with founded board or empty object
  */
-function getById({ id }: BoardId) {
-  return boardsRepo.getById({ id });
+async function getById({ id }: { id: string }) {
+  const boardRepo = getRepository(Board);
+
+  const board = await boardRepo.findOne({ id }, { relations: ['columns'] });
+
+  if (board !== undefined) {
+    // sort columns by order for each boards
+    (board as Board).columns.sort(({ order: order1 }, { order: order2 }) => {
+      if (order1 > order2) {
+        return 1;
+      } else if (order1 < order2) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+  return board;
+}
+
+/**
+ * The function to request to db to find board by id
+ * @param param0 - The object which contain board id
+ * @returns The promise with founded boardEntity or empty object
+ */
+async function findById({ id }: { id: string }) {
+  const boardRepo = getRepository(Board);
+  const board = await boardRepo.findOne({ id });
+
+  return board;
 }
 
 /**
@@ -26,8 +75,15 @@ function getById({ id }: BoardId) {
  * @param param0 - The board data
  * @returns The promise with created board data in the response format
  */
-function create({ title, columns }: BoardProperties) {
-  return boardsRepo.create({ title, columns });
+async function create({ title, columns }: BoardInterface) {
+  const boardRepo = getRepository(Board);
+
+  const board = new Board();
+  board.title = title;
+  board.columns = await createColumnEntities(columns);
+
+  await boardRepo.save(board);
+  return board;
 }
 
 /**
@@ -35,14 +91,18 @@ function create({ title, columns }: BoardProperties) {
  * @param param0 - The object which contains board id and properties
  * @returns The promise with updated board in the respose format
  */
-function update({ id, title, columns }: BoardProperties & BoardId) {
-  return boardsRepo.update({
-    id,
-    props: {
-      title,
-      columns,
-    },
-  });
+async function update({ id, title, columns }: BoardInterface) {
+  const boardRepo = getRepository(Board);
+
+  const board = (await boardRepo.findOne({ id })) as Board;
+
+  board.title = title;
+  board.columns = await updateColumnEntities(columns);
+  console.log(board);
+
+  await boardRepo.save(board);
+  console.log(board);
+  return board;
 }
 
 /**
@@ -50,17 +110,18 @@ function update({ id, title, columns }: BoardProperties & BoardId) {
  * @param param0 - The object which contains board id
  * @returns The promise with true if the board deleted false otherwise
  */
-function deleteBoard({ id }: BoardId) {
-  taskRepo.deleteByBoardId({ boardId: id });
-  return boardsRepo.deleteBoard({ id });
+async function deleteBoard({ id }: { id: string }) {
+  const boardRepo = getRepository(Board);
+  const deleteBoardResult = await boardRepo.delete(id);
+
+  return (deleteBoardResult.affected as number) > 0;
 }
 
-export {
-  getAll, getById, create, update, deleteBoard,
-};
+export { getAll, getById, findById, create, update, deleteBoard };
 export default {
   getAll,
   getById,
+  findById,
   create,
   update,
   deleteBoard,

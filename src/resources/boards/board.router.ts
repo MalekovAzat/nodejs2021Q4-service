@@ -1,8 +1,7 @@
 import Router = require('koa-router');
+import { BoardInterface } from './board.interfaces';
 
 import boardsService from './board.service';
-
-import { BoardProperties } from './board.model';
 
 const router = new Router({ prefix: '/boards' });
 
@@ -15,7 +14,7 @@ router.use(
   async (ctx, next) => {
     ctx.type = 'application/json';
     await next();
-  },
+  }
 );
 
 router.get(
@@ -29,7 +28,7 @@ router.get(
 
     ctx.body = boards;
     ctx.status = 200;
-  },
+  }
 );
 
 router.get(
@@ -50,7 +49,7 @@ router.get(
       ctx.body = { message: `Board with id ${id} is not found` };
       ctx.status = 404;
     }
-  },
+  }
 );
 
 router.post(
@@ -60,12 +59,12 @@ router.post(
    * @param ctx - Koa context
    */
   async (ctx) => {
-    const { title, columns } = ctx.request.body as BoardProperties;
+    const { title, columns } = ctx.request.body as BoardInterface;
     const board = await boardsService.create({ title, columns });
 
     ctx.body = board;
     ctx.status = 201;
-  },
+  }
 );
 
 router.put(
@@ -76,7 +75,7 @@ router.put(
    */
   async (ctx) => {
     const { id } = ctx.params;
-    const { title, columns } = ctx.request.body as BoardProperties;
+    const { title, columns } = ctx.request.body as BoardInterface;
 
     const board = await boardsService.update({ id, title, columns });
 
@@ -87,7 +86,7 @@ router.put(
       ctx.body = { message: `Board with id ${id} is not found` };
       ctx.status = 404;
     }
-  },
+  }
 );
 
 router.delete(
@@ -108,7 +107,7 @@ router.delete(
       ctx.body = { message: `Board with provided id ${id} is not found` };
       ctx.status = 404;
     }
-  },
+  }
 );
 
 export { router };

@@ -149,7 +149,6 @@ export default class Logger implements ILogger {
     const logLine = createLogLine(logInfo, 'warning');
 
     this.transmitLine(this.commonTransmitterStream, logLine);
-    this.transmitLine(this.errorTransmitterStream, logLine);
 
     const redColoredLine = addColor(logLine, 'yellow');
     this.transmitLine(this.consoleTransmitterStream, redColoredLine);
@@ -166,7 +165,6 @@ export default class Logger implements ILogger {
     const logLine = createLogLine(logInfo, 'info');
 
     this.transmitLine(this.commonTransmitterStream, logLine);
-    this.transmitLine(this.errorTransmitterStream, logLine);
 
     const redColoredLine = addColor(logLine, 'cyan');
     this.transmitLine(this.consoleTransmitterStream, redColoredLine);
@@ -183,7 +181,6 @@ export default class Logger implements ILogger {
     const logLine = createLogLine(logInfo, 'debug');
 
     this.transmitLine(this.commonTransmitterStream, logLine);
-    this.transmitLine(this.errorTransmitterStream, logLine);
 
     const redColoredLine = addColor(logLine, 'green');
     this.transmitLine(this.consoleTransmitterStream, redColoredLine);

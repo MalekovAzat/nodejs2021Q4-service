@@ -2,7 +2,7 @@ import Router = require('koa-router');
 
 import usersService from './user.service';
 
-import { UserProperties } from './user.model';
+import { UserInterface } from './user.interfaces';
 
 const router = new Router({ prefix: '/users' });
 
@@ -15,7 +15,7 @@ router.use(
   async (ctx, next) => {
     ctx.type = 'application/json';
     await next();
-  },
+  }
 );
 
 router.get(
@@ -29,7 +29,7 @@ router.get(
 
     ctx.body = users;
     ctx.status = 200;
-  },
+  }
 );
 
 router.get(
@@ -50,7 +50,7 @@ router.get(
       ctx.body = { message: `User wiht id ${id} is not found` };
       ctx.status = 404;
     }
-  },
+  }
 );
 
 router.post(
@@ -60,13 +60,13 @@ router.post(
    * @param ctx-
    */
   async (ctx) => {
-    const { name, login, password } = ctx.request.body as UserProperties;
+    const { name, login, password } = ctx.request.body as UserInterface;
 
     const user = await usersService.create({ name, login, password });
 
     ctx.body = user;
     ctx.status = 201;
-  },
+  }
 );
 
 router.put(
@@ -77,7 +77,7 @@ router.put(
    */
   async (ctx) => {
     const { id } = ctx.params;
-    const { name, login, password } = ctx.request.body as UserProperties;
+    const { name, login, password } = ctx.request.body as UserInterface;
 
     const user = await usersService.update({
       id,
@@ -93,7 +93,7 @@ router.put(
       ctx.body = { message: `User with provided id ${id} is not found` };
       ctx.status = 404;
     }
-  },
+  }
 );
 
 router.delete(
@@ -114,7 +114,7 @@ router.delete(
       ctx.body = { message: `User with provided id ${id} is not found` };
       ctx.status = 404;
     }
-  },
+  }
 );
 
 export { router };
