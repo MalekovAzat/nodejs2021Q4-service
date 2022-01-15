@@ -10,38 +10,39 @@ import { Task } from '../entity/Task';
 import { logger } from '../logger/LoggerMiddleware';
 
 let connection: unknown | Connection = null;
+const CONNECTION_TIMEOUT = 5000;
 
-export async function initDbConnection(): Promise<Connection> {
-  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
-
-  while (connection === null || connection === undefined) {
-    logger.debug({
-      message: 'Try to connect to postgres db',
-    });
-    console.log(PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_BASE);
-    connection = await createConnection({
-      type: 'postgres',
-      port: PG_PORT,
-      host: PG_HOST,
-      username: PG_USER,
-      password: PG_PASSWORD,
-      database: PG_BASE,
-      entities: [User, Task, Board, ColumnEntity],
-      synchronize: false,
-    }).catch((e) => {
-      logger.error({
-        message: 'Connection to db failed',
-        reason: e.message,
-      });
-    });
-
-    await delay(5000);
-  }
-  logger.debug({
-    message: 'Successfully connected to db',
+function connect() {
+  return createConnection({
+    type: 'postgres',
+    port: PG_PORT,
+    host: PG_HOST,
+    username: PG_USER,
+    password: PG_PASSWORD,
+    database: PG_BASE,
+    entities: [User, Task, Board, ColumnEntity],
+    synchronize: false,
   });
+}
 
-  return connection as Connection;
+export function enstablishConnection() {
+  logger.debug({
+    message: `Enstablish connection with ${PG_HOST}:${PG_PORT}`,
+  });
+  connect()
+    .catch((error) => {
+      logger.error({
+        message: `Connection to ${PG_HOST}:${PG_PORT}`,
+        reason: error.message,
+      });
+      setTimeout(enstablishConnection, CONNECTION_TIMEOUT);
+    })
+    .then((enstablishedConnection) => {
+      logger.debug({
+        message: `Successfully connected to ${PG_HOST}:${PG_PORT}`,
+      });
+      connection = enstablishedConnection;
+    });
 }
 
 export function getRepository(entity: EntityTarget<unknown>) {

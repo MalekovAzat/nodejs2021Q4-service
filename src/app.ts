@@ -6,7 +6,7 @@ import bodyParser = require('koa-bodyparser');
 import ui = require('swagger2-koa');
 import loggerMiddlware, { logger } from './logger/LoggerMiddleware';
 
-import { initDbConnection } from './common/postgresProvider';
+import { enstablishConnection } from './common/postgresProvider';
 
 import userRouter from './resources/users/user.router';
 import boardRouter from './resources/boards/board.router';
@@ -14,7 +14,7 @@ import taskRoater from './resources/tasks/task.router';
 
 const app = new Koa();
 process
-  .on('uncaughtException', (reason, p) => {
+  .on('uncaughtException', (reason) => {
     logger.error({
       message: 'Unexpected error the progream is crushed: uncaughtException',
       reason,
@@ -45,14 +45,14 @@ process
 const router = new Router();
 
 const swaggerDocument = swagger.loadDocumentSync(
-  path.join(__dirname, '../../doc/api.yaml')
+  path.join(__dirname, '../../doc/api.yaml'),
 ) as swagger.Document;
 
 /**
  * The function for initialization before app is started
  */
 async function init() {
-  await initDbConnection();
+  await enstablishConnection();
 }
 
 app

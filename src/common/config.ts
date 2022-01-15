@@ -18,20 +18,18 @@ if (!fs.existsSync(logsPath)) {
   fs.mkdirSync(logsPath);
 }
 // logs env variables
-const ERROR_LOG_FILE =
-  path.join(logsPath, process.env.ERROR_LOG_FILE as string) ||
-  path.join(logsPath, 'error-logs.txt');
-const COMMON_LOG_FILE =
-  path.join(logsPath, process.env.COMMON_LOG_FILE as string) ||
-  path.join(logsPath, 'logs.txt');
+const ERROR_LOG_FILE = path.join(logsPath, process.env.ERROR_LOG_FILE as string)
+  || path.join(logsPath, 'error-logs.txt');
+const COMMON_LOG_FILE = path.join(logsPath, process.env.COMMON_LOG_FILE as string)
+  || path.join(logsPath, 'logs.txt');
 const CONSOLE_LOG = process.env.CONSOLE_LOG === 'true';
 
 // postgres env variables
-const PG_USER = process.env.PG_USER;
-const PG_PASSWORD = process.env.PG_PASSWORD;
-const PG_HOST = process.env.PG_HOST;
+const { PG_USER } = process.env;
+const { PG_PASSWORD } = process.env;
+const { PG_HOST } = process.env;
 const PG_PORT = parseInt(process.env.PG_PORT as string, 10);
-const PG_BASE = process.env.PG_BASE;
+const { PG_BASE } = process.env;
 
 export {
   PORT,

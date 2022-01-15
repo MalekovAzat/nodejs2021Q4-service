@@ -18,9 +18,7 @@ import { ColumnEntity } from '../../entity/Column';
 async function getAll() {
   const taskRepo = getRepository(Task);
   const allTask = (await taskRepo.find()) as Task[];
-  return allTask.map((task: Task) => {
-    return task.toResponse() as TaskInterface;
-  });
+  return allTask.map((task: Task) => task.toResponse() as TaskInterface);
 }
 
 /**
@@ -107,7 +105,9 @@ async function deleteTask({ id }: { id: string }) {
   return (deleteResult.affected as number) > 0;
 }
 
-export { getAll, getById, create, update, deleteTask };
+export {
+  getAll, getById, create, update, deleteTask,
+};
 export default {
   getAll,
   getById,

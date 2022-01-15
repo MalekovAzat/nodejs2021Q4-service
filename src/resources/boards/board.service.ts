@@ -20,16 +20,18 @@ async function getAll() {
   const allBoards = await boardRepo.find({ relations: ['columns'] });
 
   // sort columns by order for each boards
-  for (const board of allBoards) {
+  allBoards.map((board) => {
     (board as Board).columns.sort(({ order: order1 }, { order: order2 }) => {
       if (order1 > order2) {
         return 1;
-      } else if (order1 < order2) {
+      }
+      if (order1 < order2) {
         return -1;
       }
       return 0;
     });
-  }
+    return board;
+  });
 
   return allBoards;
 }
@@ -49,7 +51,8 @@ async function getById({ id }: { id: string }) {
     (board as Board).columns.sort(({ order: order1 }, { order: order2 }) => {
       if (order1 > order2) {
         return 1;
-      } else if (order1 < order2) {
+      }
+      if (order1 < order2) {
         return -1;
       }
       return 0;
@@ -117,7 +120,9 @@ async function deleteBoard({ id }: { id: string }) {
   return (deleteBoardResult.affected as number) > 0;
 }
 
-export { getAll, getById, findById, create, update, deleteBoard };
+export {
+  getAll, getById, findById, create, update, deleteBoard,
+};
 export default {
   getAll,
   getById,

@@ -1,3 +1,4 @@
+import { Column } from 'typeorm';
 import { getRepository } from '../../common/postgresProvider';
 import { ColumnEntity } from '../../entity/Column';
 import { ColumnInterface } from './column.interfaces';
@@ -26,18 +27,19 @@ export async function updateEntities(columnsObjects: ColumnInterface[]) {
   const ids = columnsObjects.map(({ id }) => id);
   const founedColumns = await columnRepo.findByIds(ids);
 
-  // save to repo and return updated values
-  return founedColumns.map((column) => {
-    const columnObject = columnsObjects.find(
-      ({ id }) => id === (column as ColumnEntity).id
+  const updatedEntities = columnsObjects.map((columnObject) => {
+    const entity = (founedColumns as ColumnEntity[]).find(
+      ({ id }) => id === columnObject.id,
     );
-    (column as ColumnEntity).title = (columnObject as ColumnInterface).title;
-    (column as ColumnEntity).order = (columnObject as ColumnInterface).order;
+    (entity as ColumnEntity).title = (columnObject as ColumnInterface).title;
+    (entity as ColumnEntity).order = (columnObject as ColumnInterface).order;
 
-    columnRepo.save(column as ColumnEntity);
-
-    return column as ColumnEntity;
+    return entity;
   });
+
+  columnRepo.save(updatedEntities);
+
+  return founedColumns as ColumnEntity[];
 }
 
 /**
