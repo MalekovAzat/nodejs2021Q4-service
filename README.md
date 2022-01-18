@@ -70,3 +70,34 @@ npm run lint
 Press <kbd>F5</kbd> to debug.
 
 For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+
+## How to start the application in docker container
+
+### Requirements
+
+1. Installed `docker`.
+2. Installed `docker-compose`.
+
+The application contains several containers:
+
+1. Backend application.
+2. Postgres database.
+
+To start the container use the `docker-compose` command in the root folder of the application:
+
+```bash
+docker-compose up
+```
+
+This command creates and starts 2 containers with shared network.
+
+There are also an opportunity to choose the port for the backend application. For it need to change `PORT` variable in the .env file.
+
+### How to test the application
+
+For testing the docker containers should be turned on.
+Execute next line in bash in the `backend-service` folder:
+
+```bash
+npm run test
+```
