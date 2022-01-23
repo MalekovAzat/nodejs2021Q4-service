@@ -1,7 +1,9 @@
 import 'reflect-metadata';
 import { Connection, createConnection, EntityTarget } from 'typeorm';
 
-import { PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_BASE } from './config';
+import {
+  PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_BASE,
+} from './config';
 
 import { User } from '../entity/User';
 import { Board } from '../entity/Board';
@@ -27,21 +29,21 @@ function connect() {
 
 export function enstablishConnection() {
   logger.debug({
-    message: `Enstablish connection with ${PG_HOST}:${PG_PORT}`,
+    message: `Enstablish connection to ${PG_HOST}:${PG_PORT}`,
   });
-  connect()
+  return connect()
+    .then((enstablishedConnection) => {
+      logger.debug({
+        message: `Successfully connected to ${PG_HOST}:${PG_PORT}`,
+      });
+      connection = enstablishedConnection;
+    })
     .catch((error) => {
       logger.error({
         message: `Connection to ${PG_HOST}:${PG_PORT}`,
         reason: error.message,
       });
       setTimeout(enstablishConnection, CONNECTION_TIMEOUT);
-    })
-    .then((enstablishedConnection) => {
-      logger.debug({
-        message: `Successfully connected to ${PG_HOST}:${PG_PORT}`,
-      });
-      connection = enstablishedConnection;
     });
 }
 

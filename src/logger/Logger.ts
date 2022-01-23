@@ -1,4 +1,4 @@
-import { Readable, PassThrough } from 'stream';
+import { PassThrough } from 'stream';
 import WritableStream from './WriteStream';
 
 interface DynamicAccessProperty {
@@ -153,8 +153,8 @@ export default class Logger implements ILogger {
 
     transmitLine(this.commonTransmitterStream, logLine);
 
-    const redColoredLine = addColor(logLine, 'yellow');
-    transmitLine(this.consoleTransmitterStream, redColoredLine);
+    const yellowColoredLine = addColor(logLine, 'yellow');
+    transmitLine(this.consoleTransmitterStream, yellowColoredLine);
   }
 
   /**
@@ -169,8 +169,8 @@ export default class Logger implements ILogger {
 
     transmitLine(this.commonTransmitterStream, logLine);
 
-    const redColoredLine = addColor(logLine, 'cyan');
-    transmitLine(this.consoleTransmitterStream, redColoredLine);
+    const cyanColoredLine = addColor(logLine, 'cyan');
+    transmitLine(this.consoleTransmitterStream, cyanColoredLine);
   }
 
   /**
@@ -185,8 +185,8 @@ export default class Logger implements ILogger {
 
     transmitLine(this.commonTransmitterStream, logLine);
 
-    const redColoredLine = addColor(logLine, 'green');
-    transmitLine(this.consoleTransmitterStream, redColoredLine);
+    const greenColoredLine = addColor(logLine, 'green');
+    transmitLine(this.consoleTransmitterStream, greenColoredLine);
   }
 
   /**
