@@ -51,11 +51,16 @@
     ]
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cross-env": "7.0.3",
     "dotenv": "^10.0.0",
+    "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
+    "koa-passport": "^3.0",
     "koa-router": "^10.1.1",
+    "passport-jwt": "^4.0.0",
     "pg": "^8.7.1",
     "reflect-metadata": "^0.1.13",
     "shortid": "^2.2.16",
@@ -67,8 +72,12 @@
     "yamljs": "0.3.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/koa-passport": "^4.0.3",
     "@types/koa-router": "^7.4.4",
     "@types/node": "^16.11.12",
+    "@types/passport": "^1.0.7",
+    "@types/passport-jwt": "^3.0.6",
     "@types/shortid": "^0.0.29",
     "@types/uuid": "^8.3.3",
     "@typescript-eslint/eslint-plugin": "5.5.0",
