@@ -11,19 +11,19 @@ import { Task } from './Task';
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+    id!: string;
 
   @Column({ length: 100 })
-  name!: string;
+    name!: string;
 
-  @Column({ length: 20 })
-  login!: string;
+  @Column({ length: 40, unique: true })
+    login!: string;
 
-  @Column({ length: 20 })
-  password!: string;
+  @Column({ length: 100 })
+    password!: string;
 
   @OneToMany(() => Task, (task) => task.user)
-  tasks!: Task[];
+    tasks!: Task[];
 
   toResponse() {
     return {

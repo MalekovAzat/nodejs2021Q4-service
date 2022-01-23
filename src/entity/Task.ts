@@ -4,7 +4,6 @@ import {
   Column,
   PrimaryGeneratedColumn,
   BaseEntity,
-  OneToOne,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
@@ -15,39 +14,39 @@ import { User } from './User';
 @Entity()
 export class Task extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+    id!: string;
 
   @Column({ length: 100 })
-  title!: string;
+    title!: string;
 
   @Column()
-  order!: number;
+    order!: number;
 
   @Column({ length: 20 })
-  description!: string;
+    description!: string;
 
   @ManyToOne(() => User, (user) => user.tasks, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'userId' })
-  user!: User;
+    user!: User;
 
   @Column({ nullable: true })
-  userId!: string;
+    userId!: string;
 
   @ManyToOne(() => Board, (board) => board.tasks, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'boardId' })
-  board!: Board;
+    board!: Board;
 
   @Column({ nullable: false })
-  boardId!: string;
+    boardId!: string;
 
   @ManyToOne(() => ColumnEntity, (column) => column.tasks, {
     onDelete: 'SET NULL',
   })
   @JoinColumn({ name: 'columnId' })
-  column!: ColumnEntity;
+    column!: ColumnEntity;
 
   @Column({ nullable: true })
-  columnId!: string;
+    columnId!: string;
 
   toResponse() {
     return {

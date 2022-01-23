@@ -13,7 +13,7 @@ export const logger = new Logger(
   ERROR_LOG_FILE,
   COMMON_LOG_FILE,
   CONSOLE_LOG,
-  LOG_LEVEL
+  LOG_LEVEL,
 );
 
 /**
@@ -30,7 +30,7 @@ export default function loggerMiddlware(): (
    * @param ctx - Koa context
    * @param next - The callback to call to go to next mw
    */
-  return async function (ctx: Context, next: Next) {
+  return async function loggerMW(ctx: Context, next: Next) {
     const reqId = generateId();
 
     loggerInteral.info({

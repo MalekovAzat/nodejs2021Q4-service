@@ -7,8 +7,6 @@ import {
   createEntities as createColumnEntities,
   updateEntities as updateColumnEntities,
 } from '../columns/column.service';
-import { Task } from '../../entity/Task';
-import { logger } from '../../logger/LoggerMiddleware';
 
 /**
  * The function to request to db to get all boards
@@ -101,10 +99,9 @@ async function update({ id, title, columns }: BoardInterface) {
 
   board.title = title;
   board.columns = await updateColumnEntities(columns);
-  console.log(board);
 
   await boardRepo.save(board);
-  console.log(board);
+
   return board;
 }
 

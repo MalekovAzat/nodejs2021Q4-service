@@ -1,4 +1,3 @@
-import { Column } from 'typeorm';
 import { getRepository } from '../../common/postgresProvider';
 import { ColumnEntity } from '../../entity/Column';
 import { ColumnInterface } from './column.interfaces';
