@@ -1,0 +1,91 @@
+config:
+    target: "http://localhost:4000"
+    phases:
+      - duration: 300
+        arrivalRate: 2
+    # plugins:
+    #   metrics-by-endpoint: {}
+
+before:
+  flow:
+    - log: "Get auth token"
+    - post:
+        url: "/login"
+        json:
+          login: "admin"
+          password: "admin"
+        capture:
+          - json: $.token
+            as: token
+    - log: "Token {{ token }}"
+scenarios:
+  - name: 'Add board + Add task + update task + delete Task'
+    flow:
+      - post:
+          url: "/boards"
+          headers: 
+              authorization: "Bearer {{ token }}"
+          json: 
+            title: 'Title of the teast board'
+            columns:
+              - title: 'Title 1'
+                order: 0
+              - title: 'Title 2'
+                order: 1
+          capture:
+            - json: $.id
+              as: boardId
+      - post:
+          url: '/boards/{{ boardId }}/tasks'
+          headers: 
+            authorization: "Bearer {{ token }}"
+          json:
+            title: 'Art task'
+            order: 0
+            description: 'Descr'
+            userId: null
+            boardId: "{{ boardId }}"
+            columnId: null
+          capture:
+            - json: $.id
+              as: taskId
+      - put:
+          url: '/boards/{{ boardId }}/tasks/{{ taskId }}'
+          headers:
+            authorization: "Bearer {{ token }}"
+          json:
+            title: 'Art task'
+            order: 1
+            description: 'Descr'
+            userId: null
+            boardId: "{{ boardId }}"
+            columnId: null
+      - delete:
+          url: '/boards/{{ boardId }}/tasks/{{ taskId }}'
+          headers:
+            authorization: "Bearer {{ token }}"
+  - name: 'Add user +  update user + delete user'
+    flow:
+      - post:
+          url: '/users'
+          headers:
+            authorization: "Bearer {{ token }}"
+          json:
+            name: 'random'
+            login: "{{ $randomString(5) }}"
+            password: "{{ $randomString(5) }}"
+          capture:
+            - json: $.id
+              as: userId
+      - put:
+          url: '/users/{{ userId }}'
+          headers:
+            authorization: "Bearer {{ token }}"
+          json:
+            name: 'random'
+            login: "{{ $randomString(5) }}"
+            password: "{{ $randomString(5) }}"
+      - delete:
+          url: '/users/{{ userId }}'
+          headers:
+            authorization: "Bearer {{ token }}"
