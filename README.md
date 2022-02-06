@@ -91,7 +91,13 @@ docker-compose up
 
 This command creates and starts 2 containers with shared network.
 
-There are also an opportunity to choose the port for the backend application. For it need to change `PORT` variable in the .env file.
+After successful start of the containers need to run migrations:
+
+```bash
+npm run typeorm:migration:run
+```
+
+There are an opportunity to choose some of the env variables described in `.env` file.
 
 ### How to test the application
 

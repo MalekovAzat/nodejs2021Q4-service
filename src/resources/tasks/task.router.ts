@@ -1,5 +1,7 @@
 import Router = require('koa-router');
-import { TaskProperties } from './task.model';
+
+import { TaskInterface } from './task.interfaces';
+
 import taskService from './task.service';
 
 const router = new Router({
@@ -16,7 +18,7 @@ router.use(
   async (ctx, next) => {
     ctx.type = 'application/json';
     await next();
-  },
+  }
 );
 
 router.get(
@@ -30,7 +32,7 @@ router.get(
 
     ctx.body = tasks;
     ctx.status = 200;
-  },
+  }
 );
 
 router.get(
@@ -51,7 +53,7 @@ router.get(
       ctx.body = { message: `Task wiht id ${id} is not found` };
       ctx.status = 404;
     }
-  },
+  }
 );
 
 router.post(
@@ -67,7 +69,7 @@ router.post(
       description,
       userId, // assignee
       columnId,
-    } = ctx.request.body as TaskProperties;
+    } = ctx.request.body as TaskInterface;
 
     const { boardId } = ctx.params;
 
@@ -82,7 +84,7 @@ router.post(
 
     ctx.body = task;
     ctx.status = 201;
-  },
+  }
 );
 
 router.put(
@@ -94,10 +96,8 @@ router.put(
   async (ctx) => {
     const id = ctx.params.taskId;
     const { boardId } = ctx.params;
-    const {
-      title, order, description, userId, columnId,
-    } = ctx.request
-      .body as TaskProperties;
+    const { title, order, description, userId, columnId } = ctx.request
+      .body as TaskInterface;
 
     const user = await taskService.update({
       id,
@@ -116,7 +116,7 @@ router.put(
       ctx.body = { message: `Task with id ${id} not found` };
       ctx.status = 404;
     }
-  },
+  }
 );
 
 router.delete(
@@ -137,7 +137,7 @@ router.delete(
       ctx.body = { message: `Task with id ${id} not found` };
       ctx.status = 404;
     }
-  },
+  }
 );
 
 export { router };

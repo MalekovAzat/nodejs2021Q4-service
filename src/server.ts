@@ -1,7 +1,10 @@
 import { PORT } from './common/config';
 
-import { app } from './app';
+import { app, init } from './app';
+import { logger } from './logger/LoggerMiddleware';
 
-app.listen(PORT, () => {
-  console.log(`Server is up on ${PORT} port`);
+init().then(() => {
+  app.listen(PORT, () => {
+    logger.info({ message: `Server is up on ${PORT} port` });
+  });
 });
