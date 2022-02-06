@@ -14,17 +14,17 @@ import { Task } from './Task';
 @Entity()
 export class ColumnEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+    id!: string;
 
   @Column({ length: 100 })
-  title!: string;
+    title!: string;
 
   @Column()
-  order!: number;
+    order!: number;
 
   @ManyToOne(() => Board, (board) => board.columns, { onDelete: 'CASCADE' })
-  board!: Board;
+    board!: Board;
 
   @OneToMany(() => Task, (task) => task.column)
-  tasks!: Task[];
+    tasks!: Task[];
 }
