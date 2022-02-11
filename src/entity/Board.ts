@@ -13,14 +13,14 @@ import { Task } from './Task';
 @Entity()
 export class Board extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+    id!: string;
 
   @Column({ length: 100 })
-  title!: string;
+    title!: string;
 
   @OneToMany(() => ColumnEntity, (column) => column.board)
-  columns!: ColumnEntity[];
+    columns!: ColumnEntity[];
 
   @OneToMany(() => Task, (task) => task.board)
-  tasks!: Task[];
+    tasks!: Task[];
 }

@@ -9,6 +9,7 @@ services:
     volumes:
       - ./logs:/app/logs
       - ./src:/app/src
+      - ./uploaded-files:/app/files
     networks:
       - backend
     depends_on:

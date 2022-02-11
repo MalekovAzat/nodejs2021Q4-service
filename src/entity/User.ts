@@ -25,7 +25,7 @@ export class User extends BaseEntity {
   @OneToMany(() => Task, (task) => task.user)
     tasks!: Task[];
 
-  toResponse() {
+  toResponse(): { id: string; login: string, name: string; } {
     return {
       id: this.id,
       name: this.name,
